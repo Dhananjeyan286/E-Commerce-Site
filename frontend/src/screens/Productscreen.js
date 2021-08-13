@@ -1,14 +1,17 @@
 import React from 'react'
-import { useEffect } from 'react'
-import Ratings from './Ratings'
-import { Button, Card, Col,Image, ListGroup, Row } from 'react-bootstrap'
+import { useState,useEffect } from 'react'
+import Ratings from '../components/Ratings'
+import { Button, Card, Col,Image, ListGroup, Row ,Form} from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import { useDispatch,useSelector } from 'react-redux'
 import { listproductdetails } from '../actions/productactions'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
 
-const Productscreen = ({match}) => {//here match is a builin parameter through which we can get the value of id from the url
+
+const Productscreen = ({history,match}) => {//here match is a builin parameter through which we can get the value of id from the url
+    const [qty,setqty]=useState(1)
+
     const dispatch=useDispatch()
 
     const productdetails=useSelector(state=>(state.productdetails))
@@ -16,7 +19,11 @@ const Productscreen = ({match}) => {//here match is a builin parameter through w
     useEffect(()=>{
         dispatch(listproductdetails(match.params.id))
     },[dispatch,match])//add match here to remove warnings
-     
+    
+    const buynow=()=>{
+        history.push(`/cart/${match.params.id}?qty=${qty}`)//here history means to redirect the page and we are sending qty as a parameter in the url
+    }
+
     return (
         <div>
             {loading?<Loader />:error?<Message variant="danger" children={error}/>:<Row>
@@ -51,9 +58,20 @@ const Productscreen = ({match}) => {//here match is a builin parameter through w
                                     <Col>{product.countInStock>0?"In Stock":"Out of Stock"}</Col>
                                 </Row>
                             </ListGroup.Item>
-                            <ListGroup.Item>
+
+                            {product.countInStock>0 && <ListGroup.Item>
+                                <Row>
+                                    <Col>Qty</Col>
+                                    <Col><Form.Control style={{appearance:"auto"}}as='select'  value={qty} onChange={(e)=>setqty(e.target.value)}>{/*here Form.Select tag not working so use Form.Control tag with attribute as="select" */}
+                                    {[...Array(product.countInStock).keys()].map((x)=>
+                                    {return <option key={x+1} value={x+1}>{x+1}</option>})}{/*here ...Array(product.countInStock).keys() is used to get an array like [0,1,2,3,4] based on the countInStock and note that the array starts from 0 so we use x+1 in the map function*/}
+                                    </Form.Control></Col>
+                                </Row>
+                            </ListGroup.Item>}
+
+                             <ListGroup.Item>
                                 <Row className="px-2 py-1">
-                                        <Button type="button" className="btn-block"disabled={product.countInStock>0?false:true}>Buy Now </Button>
+                                        <Button type="button" onClick={buynow}  className="btn-block"disabled={product.countInStock>0?false:true}>Buy Now </Button>
                                     
                                         </Row>
                             </ListGroup.Item>

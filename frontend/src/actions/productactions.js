@@ -6,15 +6,10 @@ export const listproducts=()=>async(dispatch)=>{//this is a function inside a fu
         dispatch({type:PRODUCT_LIST_REQUEST})
         
         const {data}=await axios.get("http://localhost:5000/api/products")
-        dispatch({type:PRODUCT_LIST_SUCCESS,payload:data})//use axios fetch is not working
+        //const res=await fetch("http://localhost:5000/api/products")
+        //const data=await res.json()
+        dispatch({type:PRODUCT_LIST_SUCCESS,payload:data})
 
-        
-        // const data=await fetch("http://localhost:5000/api/products")
-        // const data=await res.json()
-        // if(data.products)
-        // dispatch({type:PRODUCT_LIST_SUCCESS,payload:data})
-        // else
-        // dispatch({type:PRODUCT_LIST_FAIL,payload:"HEllo"})
     }
     catch(error)
     {

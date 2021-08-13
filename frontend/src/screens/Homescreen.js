@@ -3,7 +3,7 @@ import {useDispatch,useSelector} from "react-redux"
 import { useEffect } from 'react'
 import { Row,Col } from 'react-bootstrap'
 import { listproducts } from '../actions/productactions'
-import Product from "./Product"
+import Product from "../components/Product"
 import Loader from "../components/Loader"
 import Message from "../components/Message"
 
@@ -15,7 +15,11 @@ const Homescreen = () => {
 
     useEffect(()=>{
         dispatch(listproducts())//this triggers the function while this component is loaded because useEffect() executes when the component is loaded
-    },[dispatch])//add dispatch within brackets to remove warnings
+    },[dispatch])//add dispatch within brackets to remove warnings,note here for each dispatch the below return statement gets executed 
+    //1. for initial state loading and error are false and since proctus is set to an empty array in "../reducers/productreducers.js" no error pops up and nothing gets displayed
+    //2.for product_list_request loading is true
+    //3. for product_list_success loading is false,error is false and products.map is executed ,here products gets displayed
+    //4.for product_list_fail loading is false and error is true
 
     //console.log(error)
     return (
