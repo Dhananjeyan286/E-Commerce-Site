@@ -45,4 +45,4 @@ app.use(errorhandler)
 
 
 const port=process.env.port || 5000
-app.listen(port,"0.0.0.0",()=>{console.log(`Server running on ${process.env.node_env} mode on port ${port}`)})
+app.listen(port,()=>{console.log(`Server running on ${process.env.node_env} mode on port ${port}`)})
