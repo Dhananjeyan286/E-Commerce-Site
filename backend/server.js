@@ -13,9 +13,7 @@ import path from "path"
 
 app.use(express.json())//for getting form data from req.body
 
-app.get("/",(req,res)=>{
-    res.send("hi")
-})
+
  
 app.use("/api/products",productsroute)
 app.use("/api/user",userroute)
@@ -27,6 +25,20 @@ app.get("/api/config/paypal",(req,res)=>{
 
 const __dirname=path.resolve()//we are doing this because __dirname will not work in es6 modules it will work in normal node js format but here we are using es6 modules for eg in first few lines "import uploadroutes from "./routes/uploadroutes.js"" this is an es6 format the nrml format is const uploadroutes=require("./routes/uploadroutes.js") so first itself we are setting __dirname from path.resolve() resolve means to split the object
 app.use("/uploads",express.static(path.join(__dirname,"/uploads")))//here we are doing this to set the "uploads" file as a static file
+
+if(process.env.node_env==="production")//to deploy to the heroku first in frontend folder in cmd u have to run npm build it will take some 5 mins then automatically it will stop and in frontend in build folder index.html file will be generated ,now in the backend in server.js build folder shld be provided as a static folder and any route in frontend shld go to this index.html file, we are doing this because heroku will only execute npm start and not npm run dev so we are doing this and it also uses nly static files in the frontend so we are running npm run build to convert the frontend folder to a static folder
+{
+    app.use(express.static(path.join(__dirname,"/frontend/build")))
+    app.get("*",(req,res)=>{
+        res.sendFile(path.resolve(__dirname,"frontend","build","index.html"))
+    })
+}
+else
+{
+    app.get("/",(req,res)=>{
+        res.send("hi")
+    })
+}
 
 app.use(notfound)
 app.use(errorhandler)
