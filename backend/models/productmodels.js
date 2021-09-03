@@ -13,6 +13,11 @@ const reviewmodel=mongoose.Schema({
         type:String,
         required:true
     },
+    user:{
+        type:mongoose.Schema.Types.ObjectId,
+        req:true,
+        ref:"user",
+    },
 },{
     timestamps:true
 })

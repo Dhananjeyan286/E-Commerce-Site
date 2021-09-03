@@ -15,8 +15,10 @@ const Loginscreen = ({location,history}) => {
 
     const userlogin=useSelector((state)=>state.userlogin)
     const {loading,error,userinfo}=userlogin
+    
 
-    const redirect=location.search?`/${location.search.split("=")[1]}`:"/"
+    const redirect=location.search?location.search.split("=")[1]:"/"
+    //console.log("login "+redirect)
 
     useEffect(()=>{
         if(userinfo)
@@ -33,7 +35,9 @@ const Loginscreen = ({location,history}) => {
     return (
             <Formcontainer>
             <h1>Sign In</h1>
-            {loading?<Loader />:error?<Message variant="danger" children={error} />:<><Form onSubmit={submithandler}>
+            {loading&&<Loader />}
+            {error&&<Message variant="danger" children={error} />}
+            {<><Form onSubmit={submithandler}>
                 <Form.Group controlId="email">
                     <Form.Label>Email Address</Form.Label>
                     <Form.Control type="email" placeholder="Enter email ID" value={email} onChange={(e)=>(setemail(e.target.value))}></Form.Control>

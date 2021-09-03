@@ -83,3 +83,111 @@ export const getuserprofile=asynchandler(async(req,res)=>{
     }
     //console.log("finished of usercontroller")
 })
+
+export const updateuserprofile=asynchandler(async(req,res)=>{
+    //res.send("success")
+    //console.log("start of getuser")
+    //console.log(req.user)
+    const user=await usermodels.findById(req.user._id)
+
+    //console.log("got user in user controller"+user)
+
+    if(user){
+
+        user.name=req.body.name||user.name
+        user.email=req.body.email||user.email
+        if(req.body.password)
+        user.password=req.body.password
+        //console.log("entered user")
+
+        const updateduser=await user.save()
+        res.json({
+            _id:updateduser._id,
+            name:updateduser.name,
+            email:updateduser.email,
+            isadmin:updateduser.isadmin,
+            token:generatetoken(updateduser._id)//this is useless here
+        })
+        //console.log("exit user")
+    }
+    else{
+        //console.log("enteres else of user")
+        res.status(404)
+        throw new error("User not found")
+    }
+    //console.log("finished of usercontroller")
+})
+
+export const getallusers=asynchandler(async(req,res)=>{
+    const user=await usermodels.find()
+    res.json(user)
+
+})
+
+export const deleteuser=asynchandler(async(req,res)=>{
+    const user=await usermodels.findById(req.params.id)
+    if(user)
+    {
+        await usermodels.findByIdAndRemove(req.params.id)
+        res.json({message:"User removed"})
+
+    }
+    
+    else
+    {
+        res.status(404)
+        throw new Error("User not found")
+    }
+    
+
+})
+
+export const getuser=asynchandler(async(req,res)=>{
+    const user=await usermodels.findById(req.params.id).select("-password")
+    if(user)
+    {
+        res.json(user)
+
+    }
+    
+    else
+    {
+        res.status(404)
+        throw new Error("User not found")
+    }
+    
+
+})
+
+export const updateuser=asynchandler(async(req,res)=>{
+    //res.send("success")
+    //console.log("start of getuser")
+    //console.log(req.user)
+    const user=await usermodels.findById(req.params.id)
+
+    //console.log("got user in user controller"+user)
+
+    if(user){
+
+        user.name=req.body.name||user.name
+        user.email=req.body.email||user.email
+        user.isadmin=req.body.isadmin//||user.isadmin
+        
+
+        const updateduser=await user.save()
+        res.json({
+            _id:updateduser._id,
+            name:updateduser.name,
+            email:updateduser.email,
+            isadmin:updateduser.isadmin,
+            token:generatetoken(updateduser._id)
+        })
+        
+    }
+    else{
+        //console.log("enteres else of user")
+        res.status(404)
+        throw new error("User not found")
+    }
+    //console.log("finished of usercontroller")
+})

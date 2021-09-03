@@ -17,9 +17,15 @@ const Registerscreen = ({location,history}) => {
     const dispatch=useDispatch()
 
     const userregister=useSelector((state)=>state.userregister)
-    const {loading,error,userinfo}=userregister
+    const {loading,error}=userregister
+    const userlogin=useSelector((state)=>state.userlogin)
+    const {userinfo}=userlogin
+    
 
-    const redirect=location.search?`/${location.search.split("=")[1]}`:"/"
+    
+
+    const redirect=location.search?location.search.split("=")[1]:"/"
+    //console.log(redirect)
 
     useEffect(()=>{
         if(userinfo)
@@ -37,7 +43,6 @@ const Registerscreen = ({location,history}) => {
         else
         {
             dispatch(register(name,email,password))
-            history.push("/")
         }    
     }
 

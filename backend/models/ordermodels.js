@@ -36,7 +36,7 @@ const ordermodel=mongoose.Schema(
                 type:String,
                 required:true
             },
-            city:{
+            cityname:{
                 type:String,
                 required:true
             },
@@ -44,7 +44,11 @@ const ordermodel=mongoose.Schema(
                 type:String,
                 required:true
             },
-            country:{
+            countryname:{
+                type:String,
+                required:true
+            },
+            streetname:{
                 type:String,
                 required:true
             },

@@ -44,3 +44,12 @@ export const protect=asynchandler(async(req,res,next)=>{//use next because in al
     next()//note no need to call next while writing throw new error(),next only needs to be called if other than error something is written
     //console.log("hello")
 })
+
+export const checkisadmin=asynchandler(async(req,res,next)=>{
+    if(req.user && req.user.isadmin)
+    next()
+    else{
+        res.status(404)
+        throw new Error("The user is not an admin")
+    }
+})

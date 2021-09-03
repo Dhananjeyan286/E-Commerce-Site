@@ -4,29 +4,54 @@ import Ratings from '../components/Ratings'
 import { Button, Card, Col,Image, ListGroup, Row ,Form} from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import { useDispatch,useSelector } from 'react-redux'
-import { listproductdetails } from '../actions/productactions'
+import { listproductdetails,createreview } from '../actions/productactions'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
+import {PRODUCT_CREATE_REVIEW_RESET} from "../constants/productconstants"
 
 
 const Productscreen = ({history,match}) => {//here match is a builin parameter through which we can get the value of id from the url
     const [qty,setqty]=useState(1)
+    const [rating,setrating]=useState(1)
+    const [comment,setcomment]=useState("")
 
     const dispatch=useDispatch()
 
     const productdetails=useSelector(state=>(state.productdetails))
     const {loading,error,product}=productdetails
+
+    const reviewcreate=useSelector(state=>(state.reviewcreate))
+    let {error:reviewerror,success:reviewsuccess}=reviewcreate
+
+    const userlogin=useSelector(state=>(state.userlogin))
+    const {userinfo}=userlogin
+
     useEffect(()=>{
+        dispatch({type:PRODUCT_CREATE_REVIEW_RESET})
+        if(reviewsuccess)
+        {
+            alert("Review submitted")
+            setrating(0)
+            setcomment("")
+            dispatch({type:PRODUCT_CREATE_REVIEW_RESET})
+        }
+        //console.log(match.params.id)
         dispatch(listproductdetails(match.params.id))
-    },[dispatch,match])//add match here to remove warnings
+    },[dispatch,match,reviewsuccess])//add match here to remove warnings
     
     const buynow=()=>{
         history.push(`/cart/${match.params.id}?qty=${qty}`)//here history means to redirect the page and we are sending qty as a parameter in the url
     }
 
+
+    const submithandler=(e)=>{
+        e.preventDefault()
+        dispatch(createreview(match.params.id,{rating,comment}))
+    }
+
     return (
         <div>
-            {loading?<Loader />:error?<Message variant="danger" children={error}/>:<Row>
+            {loading?<Loader />:error?<Message variant="danger" children={error}/>:<><Row>
                 <Link to="/">
                     <Button type="button"  className="btn btn-primary m-3 rounded">Go Back</Button>
                 </Link>
@@ -78,7 +103,45 @@ const Productscreen = ({history,match}) => {//here match is a builin parameter t
                         </ListGroup>
                     </Card> 
                 </Col>
-            </Row>}
+            </Row>
+            <Row>
+                <Col md="6">
+                    <h2>Reviews</h2>
+                    {product.reviews.length === 0 && <Message>No Reviews</Message>}
+                    <ListGroup variant="flush">
+                        {product.reviews.map((review)=>(
+                            <ListGroup.Item key={review._id}>
+                                <strong>{review.name}</strong>
+                                <Ratings value={review.rating} />
+                                <p>{review.createdAt.substring(0,10)}</p>
+                                <p>{review.comment}</p>
+                            </ListGroup.Item>
+                        ))}
+                        <ListGroup.Item>
+                            <h2>Write a customer review</h2>
+                            {reviewerror && <Message variant="danger" children={reviewerror} />}
+                            {userinfo ?(<Form onSubmit={submithandler}>
+                                <Form.Group controlId="rating">
+                                    <Form.Label>Rating</Form.Label>
+                                    <Form.Control as="select" style={{appearance:"auto"}} value={rating} onChange={((e)=>setrating(e.target.value))}>
+                                        <option value="1">1 - Poor</option>
+                                        <option value="2">2 - Fair</option>
+                                        <option value="3">3 - Good</option>
+                                        <option value="4">4 - Very Good</option>
+                                        <option value="5">6 - Excellent</option>
+                                    </Form.Control>
+                                </Form.Group>
+                                <Form.Group controlId="comment">
+                                    <Form.Label>Comment</Form.Label>
+                                    <Form.Control as="textarea" className="mb-3" value={comment} onChange={((e)=>setcomment(e.target.value))}></Form.Control>
+                                </Form.Group>
+                                <Button type="submit" variant="primary">Submit</Button>
+                            </Form>):(<Message>Please <Link to="/login">sign in</Link> to write a review</Message>)}
+                        </ListGroup.Item>
+                    </ListGroup>
+                </Col>
+            </Row>
+            </>}
             
         </div>
     )
