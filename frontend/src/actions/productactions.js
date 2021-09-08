@@ -21,7 +21,7 @@ export const listproductdetails=(id)=>async(dispatch)=>{
     try{
         //console.log(id)
         dispatch({type:PRODUCT_DETAILS_REQUEST})
-        const {data}=await axios.get(`http://localhost:5000/api/products/${id}`)
+        const {data}=await axios.get(`/api/products/${id}`)
         //console.log(data)
         dispatch({type:PRODUCT_DETAILS_SUCCESS,payload:data})
     }
