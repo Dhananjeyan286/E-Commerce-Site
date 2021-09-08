@@ -1,3 +1,7 @@
+/*
+ to run the code type npm run dev in command promt
+
+*/
 import express from "express"//include '"type":"module" in package.json to use ES6 methods in node'
 const app=express()
 import dotenv from "dotenv"
@@ -29,7 +33,7 @@ app.use("/uploads",express.static(path.join(__dirname,"/uploads")))//here we are
 if(process.env.node_env==="production")//to deploy to the heroku first in frontend folder in cmd u have to run npm build it will take some 5 mins then automatically it will stop and in frontend in build folder index.html file will be generated ,now in the backend in server.js build folder shld be provided as a static folder and any route in frontend shld go to this index.html file, we are doing this because heroku will only execute npm start and not npm run dev so we are doing this and it also uses nly static files in the frontend so we are running npm run build to convert the frontend folder to a static folder
 {
     app.use(express.static(path.join(__dirname,"/frontend/build")))
-    app.get("*",(req,res)=>{
+    app.get("*",(req,res)=>{//star(*) indicates anyother route other than above mentioned routes will get executed through this
         res.sendFile(path.resolve(__dirname,"frontend","build","index.html"))
     })
 }
