@@ -19,14 +19,14 @@ const Productscarousel = () => {
 
     return (
         loading?<Loader />:error?<Message variant="danger" children={error} />:(
-            <Carousel  pause="hover" className="bg-dark">{/*carousel keeps on moving so it pauses when mouse is placed on the carousel */}
+            <Carousel  pause="hover" interval="100000" className="bg-dark">{/*carousel keeps on moving so it pauses when mouse is placed on the carousel */}
                 {products.map((product)=>(
                     <Carousel.Item>
-                        <Link to={`/product/${product._id}`}>
-                            <Carousel.Caption className="carousel-caption">
+                        <Link to={`/product/${product._id}`} style={{textDecoration:"none",paddingBottom:"0px !important"}}>
+                            <Carousel.Caption  style={{position:"relative"}}>
                                 <h2>{product.name} (${product.price})</h2>
                             </Carousel.Caption>
-                            <Image src={product.image} alt={product.name} fluid />
+                            <center><Image src={product.image} alt={product.name} fluid  /></center>
                             
                         </Link>
                     </Carousel.Item>
