@@ -12,7 +12,7 @@ const Shippingsteps = ({step1,step2,step3,step4}) => {
                 }
             </Nav.Item>
             <Nav.Item>    
-                {step2?<Nav.Link href="/shippin">Shipping</Nav.Link>
+                {step2?<Nav.Link href="/shipping">Shipping</Nav.Link>
                 :<Nav.Link disabled>Shipping</Nav.Link>}
             </Nav.Item>
             <Nav.Item>    
