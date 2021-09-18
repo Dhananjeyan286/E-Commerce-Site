@@ -62,7 +62,7 @@ const Productscreen = ({history,match}) => {//here match is a builin parameter t
                     <ListGroup variant="flush">{/*variant="flush" is given for reducing the space between list items and to removes the lines around the list */}
                         <ListGroup.Item as="h3">{product.name}</ListGroup.Item>
                         <ListGroup.Item>
-                        <Ratings value={product.rating}/> from {product.numReviews} reviews
+                        <Ratings value={product.rating}/> from {product.numReviews} {product.numReviews>1?"reviews":"review"}
                         </ListGroup.Item>
                         <ListGroup.Item><span style={{fontWeight:"800"}}>Price</span>:${product.price}</ListGroup.Item>
                         <ListGroup.Item><span style={{fontWeight:"800"}}>Description</span>:{product.description}</ListGroup.Item>
@@ -128,7 +128,7 @@ const Productscreen = ({history,match}) => {//here match is a builin parameter t
                                         <option value="2">2 - Fair</option>
                                         <option value="3">3 - Good</option>
                                         <option value="4">4 - Very Good</option>
-                                        <option value="5">6 - Excellent</option>
+                                        <option value="5">5 - Excellent</option>
                                     </Form.Control>
                                 </Form.Group>
                                 <Form.Group controlId="comment">
