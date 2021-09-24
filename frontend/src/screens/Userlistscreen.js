@@ -47,7 +47,7 @@ const Userlistscreen = ({history}) => {
                     {users.map((user)=>(
                         <tr key={user._id}>
                             <td>{user._id}</td>
-                            <td>{user._name}</td>
+                            <td>{user.name}</td>
                             <td><a href={`mailto:${user.email}`} style={{textDecoration:"none"}}>{user.email}</a></td>{/*here `mailto:${user.email}` directly opens the email website and you can mail them anytg */}
                             <td>{user.isadmin?(<i className="fas fa-check" style={{color:"green"}}></i>):(<i className="fas fa-times" style={{color:"red"}}></i>)}</td>
                             <td><a href={`/admin/user/${user._id}/edit`}>
