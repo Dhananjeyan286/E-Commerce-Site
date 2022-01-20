@@ -88,9 +88,9 @@ const Orderscreen = ({match,history}) => {
                             <h2>Shipping</h2>
                             
                                 <p><strong style={{fontWeight:"900"}}>Name: </strong>
-                                {order.user.name}</p>
+                                {order.user && order.user.name}</p>
                                 <p><strong style={{fontWeight:"900"}}>Email ID: </strong>
-                                {order.user.email}</p>
+                                {order.user && order.user.email}</p>
                                 <strong style={{fontWeight:"900"}}>Address: </strong>
                                 {order.shippingaddress.address}, {order.shippingaddress.streetname}, {order.shippingaddress.cityname} - {order.shippingaddress.postalcode}, {order.shippingaddress.countryname}   
                             
