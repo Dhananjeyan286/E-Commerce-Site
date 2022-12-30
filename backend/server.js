@@ -1,5 +1,8 @@
 /*
  to run the code type npm run dev in command promt
+ credentials for admin login
+ emailid - admin@example.com
+ password - 123456
 
 */
 import express from "express"//include '"type":"module" in package.json to use ES6 methods in node'
